@@ -75,7 +75,8 @@ async function processarAguardandoImagem(message, userId, client) {
         const { prediction, heatmapB64 } = await analisarImagemNaAPI(imageBuffer);
 
         // Envia os resultados da IA
-        await message.reply(`✅ Análise concluída!\n\n📊 Resultado: *${prediction}% de chance de possuir manipulação.*\n\nAbaixo está o heatmap gerado:`);
+        const resultado = ((1 - prediction) * 100).toFixed(2).replace('.', ',');
+        await message.reply(`✅ Análise concluída!\n\n📊 Resultado: *${resultado}% de chance de possuir manipulação.*\n\nAbaixo está o heatmap gerado:`);
         const heatmapMedia = new MessageMedia('image/jpeg', heatmapB64, 'heatmap.jpg');
         await client.sendMessage(message.from, heatmapMedia, { caption: "Heatmap gerado pela análise" });
 
